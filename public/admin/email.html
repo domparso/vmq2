@@ -1,0 +1,84 @@
+<div class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-block">
+            <input type="text" id="host" lay-verify="required" placeholder="请输入地址，比如smtp.qq.com" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">端口号</label>
+        <div class="layui-input-block">
+            <input type="text" id="port" lay-verify="required" placeholder="请输入端口号，比如465（SSL）或者25" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发件人昵称</label>
+        <div class="layui-input-block">
+            <input type="text" id="from_name" lay-verify="required" placeholder="请输入发件人昵称，比如至尊码支付" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">账号</label>
+        <div class="layui-input-block">
+            <input type="text" id="user_name" lay-verify="required" placeholder="请输入账号，比如123456789@qq.com" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码/授权码</label>
+        <div class="layui-input-block">
+            <input type="text" id="password" lay-verify="required" placeholder="请输入密码，比如123456" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发件人邮箱地址</label>
+        <div class="layui-input-block">
+            <input type="text" id="from" lay-verify="required" placeholder="请输入发件人邮箱地址，比如123456789@qq.com" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: right;">
+        <button class="layui-btn" id="email-btn">保存</button>
+    </div>
+</div>
+
+<script>
+    function formatDate(now) {
+        if (now==0) {
+            return "无";
+        }
+        now = new Date(now*1000);
+        return now.getFullYear()
+            + "-" + (now.getMonth()>8?(now.getMonth()+1):"0"+(now.getMonth()+1))
+            + "-" + (now.getDate()>9?now.getDate():"0"+now.getDate())
+            + " " + (now.getHours()>9?now.getHours():"0"+now.getHours())
+            + ":" + (now.getMinutes()>9?now.getMinutes():"0"+now.getMinutes())
+            + ":" + (now.getSeconds()>9?now.getSeconds():"0"+now.getSeconds());
+
+    }
+    layui.use(['form','layer'], function(){
+        var table = layui.table,form = layui.form;
+
+        form.render();
+
+    });
+
+    $.post("admin/index/getemail",function (data) {
+        // console.log(data);
+        if (data.code==1){
+            $('#host').val(data.host);
+            $('#port').val(data.port);
+            $('#from_name').val(data.from_name);
+            $('#user_name').val(data.user_name);
+            $('#password').val(data.password);
+            $('#from').val(data.from);
+        }
+    });
+    $('#email-btn').on('click',function(){
+        $.post('admin/index/setemail',{host: $('#host').val(),port: $('#port').val(),from_name: $('#from_name').val(),user_name: $('#user_name').val(),password: $('#password').val(),from: $('#from').val()},function(res){
+            if(res.code == 1){
+                layer.msg('修改成功');
+            }else{
+                layer.msg('修改失败');
+            }
+        })
+    })
+</script>

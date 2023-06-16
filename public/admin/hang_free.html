@@ -1,0 +1,249 @@
+<div class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">监控密钥</label>
+        <div class="layui-input-block">
+            <input type="text" id="cron-key" value="" lay-verify="required" placeholder="监控密钥" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝账单频率</label>
+        <div class="layui-input-block">
+            <input type="text" id="ali-frequency" value="" lay-verify="required" placeholder="支付宝账单频率" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">QQ监控频率</label>
+        <div class="layui-input-block">
+            <input type="text" id="qq-frequency" value="" lay-verify="required" placeholder="QQ监控频率" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝状态</label>
+        <div class="layui-input-block">
+            <input type="text" id="ali-state" value="" lay-verify="required" placeholder="支付宝cookie状态" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝更新时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="ali-cookie-time" value="" lay-verify="required" placeholder="支付宝cookie更新时间" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝运行时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="ali-time" value="" lay-verify="required" placeholder="支付宝运行时间" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付宝监控通道</label>
+        <div class="layui-input-block">
+            <input type="radio" name="passageway" title="通道一" value="1" id="passageway-1" disabled><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><span>通道一</span></div> 
+			<input type="radio" name="passageway" title="通道二" value="2" id="passageway-2"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>通道二</span></div>	
+			<input type="radio" name="passageway" title="通道三" value="3" id="passageway-3"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>通道三</span></div>	
+			<input type="radio" name="passageway" title="通道四" value="4" id="passageway-4"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>通道四</span></div>	
+			<input type="radio" name="passageway" title="通道五" value="5" id="passageway-5"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>通道五</span></div>	
+			<span style="vertical-align: sub;">说明：通道一到四是监控余额（关闭自动转入余额宝），通道一已失效；通道五是监控账单，不会递增金额</span>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="ali-state-up">更新支付宝状态</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">QQ状态</label>
+        <div class="layui-input-block">
+            <input type="text" id="qq-state" value="" lay-verify="required" placeholder="QQcookie状态" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">QQ更新时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="qq-cookie-time" value="" lay-verify="required" placeholder="QQcookie更新时间" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">QQ运行时间</label>
+        <div class="layui-input-block">
+            <input type="text" id="qq-time" value="" lay-verify="required" placeholder="QQ运行时间" autocomplete="off" readonly class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" id="qq-state-up">更新QQ状态</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">回调监控</label>
+        <div class="layui-input-block">
+            <div id="pre"></div>
+            <img src="assets/images/20210924225325.png" style="width: 800px;">
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: right;">
+        <button class="layui-btn" onclick="save()">保存</button>
+    </div>
+</div>
+
+<script>
+    function formatDate(now) {
+        if (now==0) {
+            return "无";
+        }
+        now = new Date(now*1000);
+        return now.getFullYear()
+            + "-" + (now.getMonth()>8?(now.getMonth()+1):"0"+(now.getMonth()+1))
+            + "-" + (now.getDate()>9?now.getDate():"0"+now.getDate())
+            + " " + (now.getHours()>9?now.getHours():"0"+now.getHours())
+            + ":" + (now.getMinutes()>9?now.getMinutes():"0"+now.getMinutes())
+            + ":" + (now.getSeconds()>9?now.getSeconds():"0"+now.getSeconds());
+
+    }
+    layui.use(['form','layer'], function(){
+        var table = layui.table,form = layui.form;
+
+        form.render();
+
+    });
+
+    function hangFree(){
+        $.post("admin/index/hangfree",function (data) {
+            // console.log(data);
+            if (data.code==1){
+                if (data.data.aliState == 0){
+                    $('#ali-state').css('color','red');
+                    $("#ali-state").val("失效");
+                }else if (data.data.aliState == 1){
+                    $('#ali-state').css('color','green');
+                    $("#ali-state").val("正常");
+                }
+                if (data.data.qqState == 0){
+                    $('#qq-state').css('color','red');
+                    $("#qq-state").val("失效");
+                }else if (data.data.qqState == 1){
+                    $('#qq-state').css('color','green');
+                    $("#qq-state").val("正常");
+                }
+                $("#cron-key").val(data.data.cronKey);
+                $("#ali-cookie-time").val(data.data.aliCookieTime);
+                $("#qq-cookie-time").val(data.data.qqCookieTime);
+                $("#ali-time").val(data.data.aliTime);
+                $("#qq-time").val(data.data.qqTime);
+                $('#passageway-'+data.data.passageway).next().click();
+                $("#ali-frequency").val(data.data.aliFrequency);
+                $("#qq-frequency").val(data.data.qqFrequency);
+                $('#pre').html(`<pre class="layui-code layui-box layui-code-view" lay-title="回调监控"><h3 class="layui-code-h3">宝塔"计划任务"监控步骤 计划任务->Shell脚本->执行周期改成"1分钟"执行一次->然后脚本内容就是以下<a href="javascript:;">code</a></h3><ol class="layui-code-ol"><li>PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin</li><li>export PATH</li><li>step=1</li><li>for (( i = 0; i < 60; i=(i+step) )); do</li><li>curl -sS --connect-timeout 10 -m 60 '`+location.protocol+'//'+location.host+`/cron?key=`+data.data.cronKey+`'</li><li>endDate=\`date +"%Y-%m-%d %H:%M:%S"\`</li><li>echo "★[$endDate] Successful"</li><li>sleep $step</li><li>done</li><li>exit 0</li></ol></pre>`);
+            }
+        });   
+    }
+    hangFree();
+    
+    $('#ali-state-up').on("click",function(){
+        layer.load(3);
+        $.post('admin/index/hangfreeedit',{act: 'getqrcode',type: 2},function(res){
+            // console.log(res);
+            layer.closeAll('loading');
+            if(res.code == 1){
+                var op = layer.open({
+                  type: 1,
+                  skin: 'layui-layer-demo', //样式类名
+                  closeBtn: 0, //不显示关闭按钮
+                  anim: 2,
+                  shadeClose: true, //开启遮罩关闭
+                  area: ['250px', '265px'], //宽高
+                  title: '登录二维码',
+                  content: '<img id="qrcode" src="/enQrcode?url='+res.qrcodeurl+'" style="width: 200px;margin: 10px auto 0;display: block;">'
+                });
+                
+                var t2 = window.setInterval(function() {
+                    $.ajaxSettings.async = false;
+                    $.post('admin/index/hangfreeedit',{act: 'getcookie',type: 2,loginid: res.loginid},function(res){
+                        // console.log(res);
+                        if(res.code == 1){
+                            layer.msg('更新成功',{time: 1000,icon: 1},function(){
+                                // location.reload();
+                                hangFree();
+                                layer.close(op);
+                                window.clearInterval(t2);
+                            });
+                        }
+                    },'json')
+                    $.ajaxSettings.async = true;
+                },1000)
+            }
+        },'json')
+    })
+    
+    $('#qq-state-up').on("click",function(){
+        layer.load(3);
+        $.post('admin/index/hangfreeedit',{act: 'getqrcode',type: 3},function(res){
+            // console.log(res);
+            layer.closeAll('loading');
+            if(res.code == 1){
+                var op = layer.open({
+                  type: 1,
+                  skin: 'layui-layer-demo', //样式类名
+                  closeBtn: 0, //不显示关闭按钮
+                  anim: 2,
+                  shadeClose: true, //开启遮罩关闭
+                  area: ['250px', '265px'], //宽高
+                  title: '登录二维码',
+                  content: '<img id="qrcode" src="data:image/jpg/png/gif;base64,'+res.data+'" style="width: 200px;margin: 10px auto 0;display: block;">'
+                });
+                
+                var t2 = window.setInterval(function() {
+                    $.ajaxSettings.async = false;
+                    $.post('admin/index/hangfreeedit',{act: 'getcookie',type: 3,qrsig: res.qrsig},function(res){
+                        // console.log(res);
+                        if(res.code == 1){
+                            layer.msg('更新成功',{time: 1000,icon: 1},function(){
+                                // location.reload();
+                                hangFree();
+                                layer.close(op);
+                                window.clearInterval(t2);
+                            });
+                        }
+                    },'json')
+                    $.ajaxSettings.async = true;
+                },1000)
+            }
+        },'json')
+    })
+    
+    function save(){
+        cronKey = $('#cron-key').val();
+        passageway = $('[name="passageway"]:checked').val();
+        aliFrequency = $("#ali-frequency").val();
+        qqFrequency = $("#qq-frequency").val();
+        if(cronKey == ''){
+            layer.msg('请输入监控密钥');
+            return ;
+        }
+        if(passageway == ''){
+            layer.msg('请选择支付宝通道');
+            return ;
+        }
+        if(aliFrequency == ''){
+            layer.msg('请输入支付宝账单频率');
+            return ;
+        }else if(aliFrequency < 10){
+            layer.msg('支付宝账单频率不能小于10');
+            return;
+        }
+        if(qqFrequency == ''){
+            layer.msg('请输入QQ监控频率');
+            return ;
+        }else if(qqFrequency < 5){
+            layer.msg('QQ监控频率不能小于5');
+            return;
+        }
+        
+        $.post('admin/index/hangfreeedit',{act: 'save',key: cronKey,passageway: passageway,aliFrequency: aliFrequency,qqFrequency: qqFrequency},function(res){
+            if(res.code == 1){
+                hangFree();
+            }
+            layer.msg(res.msg);
+        },'json')
+    }
+</script>

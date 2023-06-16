@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta name="apple-mobile-web-app-capable" content="no"/>
+    <meta name="apple-touch-fullscreen" content="yes"/>
+    <meta name="format-detection" content="telephone=no,email=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>扫码支付</title>
+    <link href="pay.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+<div class="body" id="body">
+    <div id="loading"><img src="loading.gif" id="loading"></div>
+    <h1 class="mod-title">
+
+        <span class="ico_log ico-1" v-if="payType == 1"></span>
+        <span class="ico_log ico-2" v-if="payType == 2"></span>
+        <span class="ico_log ico-3" v-if="payType == 3"></span>
+    </h1>
+
+    <div class="mod-ct">
+        <div class="order">
+        </div>
+        <div class="amount" id="timeOut" style="font-size: 20px;color: red;display: none;"><p>订单已过期，请您返回网站重新发起支付</p><br></div>
+        <div id="orderbody">
+            <div class="amount" id="money">￥{{ reallyPrice }}</div>
+            <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
+                <div data-role="qrPayImg" class="qrcode-img-area">
+                    <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading" style="display: none;">加载中</div>
+                    <div style="position: relative;display: inline-block;">
+                        <img  id='show_qrcode' alt="加载中..." src="" width="210" height="210" style="display: block;">
+                        <img onclick="$('#use').hide()" id="use" src="use_1.png" v-if="payType==1"
+                             style="position: absolute;top: 50%;left: 50%;width:32px;height:32px;margin-left: -16px;margin-top: -16px">
+                        <img onclick="$('#use').hide()" id="use" src="use_2.png" v-if="payType==2"
+                             style="position: absolute;top: 50%;left: 50%;width:32px;height:32px;margin-left: -16px;margin-top: -16px">
+                        <img onclick="$('#use').hide()" id="use" src="use_3.png" v-if="payType==3"
+                             style="position: absolute;top: 50%;left: 50%;width:32px;height:32px;margin-left: -16px;margin-top: -16px">
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="time-item">
+
+
+                <div class="time-item" id="msg">
+                    <h1  v-if="price != reallyPrice">
+                        <span style="color:red">为了您正常支付 请务必付款 {{ reallyPrice }} 元 <br>备注说明无需填写</span><br>
+
+
+                    </h1>
+
+                </div>
+
+
+
+
+
+
+
+                <strong id="hour_show">0时</strong>
+                <strong id="minute_show">0分</strong>
+                <strong id="second_show">0秒</strong>
+            </div>
+            <div class="open_app" v-if="payType == 1">
+                    <a id="wxpay" class="btn-open-app">打开微信APP继续付款</a><br><br>
+                    <!-- <a onclick="checkresult()" class="btn-check">我已付款，返回查看订单</a> -->
+                </div>
+                <div class="open_app" v-if="payType == 2">
+                    <a id="alipay" class="btn-open-app">打开支付宝APP继续付款</a><br><br>
+                    <!-- <a onclick="checkresult()" class="btn-check">我已付款，返回查看订单</a> -->
+                </div>
+            <div style="font-size: 18px;margin-top: 18px;">支付后页面没跳转点击一下-><a href="javascript:;" id="submitBd">提交补单</a></div>
+            <div class="tip">
+                <div class="ico-scan"></div>
+                <div class="tip-text">
+                    <p>请使用{{payType1}}扫一扫</p>
+
+                    <p v-if="isAuto == 0">扫描二维码完成支付</p>
+                    <p v-if="isAuto == 1">扫码后输入金额支付</p>
+
+                </div>
+            </div>
+
+            <div class="detail" id="orderDetail">
+                <dl class="detail-ct" id="desc" style="display: none;">
+                    <dt>金额</dt>
+                    <dd>{{price}}</dd>
+                    <dt>商户订单：</dt>
+                    <dd>{{payId}}</dd>
+                    <dt>创建时间：</dt>
+                    <dd>{{formatDate(date)}}</dd>
+                    <dt>状态</dt>
+                    <dd>等待支付</dd>
+                </dl>
+
+                <a href="javascript:void(0)" class="arrow" onclick="aaa()"><i class="ico-arrow"></i></a>
+            </div>
+        </div>
+
+
+        <div class="tip-text">
+
+        </div>
+
+
+    </div>
+    <div class="foot">
+        <div class="inner">
+            <p>手机用户可保存上方二维码到手机中</p>
+            <p>在{{payType1}}扫一扫中选择“相册”即可</p>
+        </div>
+    </div>
+
+</div>
+<div class="copyRight">
+
+</div>
+<div id="pay-type" style="display: none;">{{payType}}</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/vue.min.js"></script>
+<script src="/layer/layer.js"></script>
+<script src="/payPage/main.js"></script>
+</body>
+</html>
